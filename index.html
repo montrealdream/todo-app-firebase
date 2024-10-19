@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- css -->
+    <link rel="stylesheet" href="style.css">
+    <title>ToDo List</title>
+</head>
+<body class="">
+    <div class="button-bg-mode">
+    </div>
+
+    <div class="todo-app">
+        <!-- title -->
+        <h1 class="todo-app__title">Todo App</h1>
+
+        <!-- form create -->
+        <form action="#" class="todo-app__create">
+            <input type="text" placeholder="Tiêu đề của công việc...">
+            <button type="submit">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </form>
+
+        <!-- list -->
+        <div class="todo-app__list">
+            <div class="todo-app__item">
+                <span class="todo-app__item-content">Công việc 1</span>
+                <div class="todo-app__item-actions">
+                    <button class="todo-app__item-button todo-app__item-buton--complete">
+                        <i class="fa-solid fa-check"></i>
+                    </button>
+                    <button class="todo-app__item-button todo-app__item-buton--edit">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button class="todo-app__item-button todo-app__item-buton--delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="todo-app__item">
+                <span class="todo-app__item-content">Công việc 2</span>
+                <div class="todo-app__item-actions">
+                    <button class="todo-app__item-button todo-app__item-buton--complete">
+                        <i class="fa-solid fa-check"></i>
+                    </button>
+                    <button class="todo-app__item-button todo-app__item-buton--edit">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button class="todo-app__item-button todo-app__item-buton--delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- js -->
+    <script src="script.js" type="module"></script>
+</body>
+</html>

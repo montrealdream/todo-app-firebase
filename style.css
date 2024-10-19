@@ -1,0 +1,235 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    /* font */
+    --font-main : "Be Vietnam Pro", sans-serif;
+
+    /* light mode */
+    --light-mode-main : #5A877D;
+    --light-mode-bg: #F6F6F6F6;
+    --light-mode-input: #FFFFFF;
+    --light-mode-border: #DDDDDD;
+
+    --light-mode-main-hover: #3e5953;
+
+    /* dark mode */
+    --dark-mode-main: #FFFFFF;
+    --dark-mode-bg: #2B2B2B;
+    --dark-mode-input: #3c3c3c;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0px; /* reset margin của thẻ body */
+    font-family: var(--font-main);
+}
+
+/** todo app*/
+.todo-app {
+    width: 500px; /** độ rộng của cái form */
+    margin: 50px auto 50px auto; /** auto căn giữa cái form */
+    padding: 10px 20px; 
+    background-color: var(--light-mode-bg);
+    border: 1px solid var(--light-mode-border);
+    border-radius: 8px;
+}
+
+body.dark .todo-app {
+    width: 500px; /** độ rộng của cái form */
+    margin: 50px auto 50px auto; /** auto căn giữa cái form */
+    padding: 10px 20px; 
+    background-color: var(--dark-mode-bg);
+    border-radius: 8px;
+}
+
+.todo-app__title {
+    color: var(--light-mode-main);
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--light-mode-border);
+}
+
+body.dark .todo-app__title {
+    color: var(--dark-mode-main);
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--dark-mode-input);
+}
+
+.todo-app__create {
+    display: flex;
+    height: 42px;
+    margin-bottom: 20px;
+}
+
+.todo-app__create input {
+    flex: 1; /** chiếm trọn phần còn lại */
+    background-color: var(--light-mode-input);
+    border: 1px solid var(--light-mode-border);
+    outline: none;
+    height: 100%;
+    padding: 0px 10px;
+    border-radius: 8px 0px 0px 8px;
+    color: #000000;
+    font-size: 16px;
+}
+
+body.dark .todo-app__create input {
+    flex: 1; /** chiếm trọn phần còn lại */
+    background-color: var(--dark-mode-input);
+    border: 1px solid var(--dark-mode-input);
+    outline: none;
+    height: 100%;
+    padding: 0px 10px;
+    border-radius: 8px 0px 0px 8px;
+    color: #FFFFFF;
+    font-size: 16px;
+}
+
+.todo-app__create button {
+    background-color: var(--light-mode-main);
+    border: 0;
+    width: 42px;
+    height: 100%;
+    margin-bottom: 20px;
+    border-radius: 0px 8px 8px 0px; /** bo 2 góc phải trên phải dưới */
+    cursor: pointer;
+    color: #FFFFFF;
+    font-size: 18px;
+}
+
+.todo-app__create button:hover {
+    background-color: var(--light-mode-main-hover);
+    border: 0;
+    width: 42px;
+    height: 100%;
+    margin-bottom: 20px;
+    border-radius: 0px 8px 8px 0px; /** bo 2 góc phải trên phải dưới */
+    cursor: pointer;
+    color: #FFFFFF;
+    font-size: 18px;
+}
+
+body.dark .todo-app__create button {
+    background-color: var(--dark-mode-main);
+    border: 0;
+    width: 42px;
+    height: 100%;
+    margin-bottom: 20px;
+    border-radius: 0px 8px 8px 0px; /** bo 2 góc phải trên phải dưới */
+    cursor: pointer;
+    color: #000000;
+    font-size: 18px;
+}
+
+.todo-app__item {
+    display: flex;
+    align-items: center;
+    color: black;
+    background-color: var(--light-mode-input);
+    padding: 0px 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+body.dark .todo-app__item {
+    display: flex;
+    align-items: center;
+    color: white;
+    background-color: var(--dark-mode-input);
+    padding: 0px 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.todo-app__item-content {
+    flex: 1;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.todo-app__item-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+
+.todo-app__item-buton--complete {
+    background-color: #198754;
+    color: white;
+}
+
+.todo-app__item-buton--edit {
+    background-color: #FFC107;
+    color: white;
+}
+
+.todo-app__item-buton--delete {
+    background-color: #DC3545;
+    color: white;
+}
+
+/** hết todo app*/
+
+
+/* nút dark mode và light mode */
+.button-bg-mode {
+    /* vị trí */
+    position: fixed;
+    right: 30px;
+    bottom: 20px;
+
+    /* hình dáng nút  */
+    width: 60px;
+    height: 30px;
+    padding: 10px 20px;
+    border-radius: 45px;
+    
+    /* căn lề */
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;    
+
+    background-color: #ddd;
+}
+
+.button-bg-mode::before {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    transition: all 1s;
+    
+
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 45px;
+    background-color: #000000;
+}
+
+body.dark .button-bg-mode::before {
+    left: 33px;
+    transition: all 1s;
+}
+/* hết nút dark mode và light mode */
