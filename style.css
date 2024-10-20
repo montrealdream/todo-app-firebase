@@ -25,7 +25,8 @@
 body {
     margin: 0px; /* reset margin của thẻ body */
     font-family: var(--font-main);
-    background-color:var(--light-mode-border);
+    /* background-color:var(--light-mode-border); */
+    background-color: #6d6565;
 }
 
 /** todo app*/
@@ -84,6 +85,13 @@ body.dark .todo-app__title {
     font-size: 16px;
 }
 
+/* .todo-app__create input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #FFFFFF inset !important;
+} */
+
 body.dark .todo-app__create input {
     flex: 1; /** chiếm trọn phần còn lại */
     background-color: var(--dark-mode-input);
@@ -94,7 +102,21 @@ body.dark .todo-app__create input {
     border-radius: 8px 0px 0px 8px;
     color: #FFFFFF;
     font-size: 16px;
+    outline: none;
 }
+
+/* body.dark .todo-app__create input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    font-size: 16px;
+    -webkit-box-shadow: 0 0 0 30px #3c3c3c inset !important;
+}
+
+body.dark .todo-app__create input:-webkit-autofill{
+    font-size: 16px;
+    -webkit-text-fill-color: white !important;
+} */
 
 .todo-app__create button {
     background-color: var(--light-mode-main);
@@ -232,3 +254,67 @@ body.dark .button-bg-mode::before {
     transition: all 1s;
 }
 /* hết nút dark mode và light mode */
+
+/* alert */
+.alert {
+    /* vị trí */
+    position: fixed;
+    top: 50px;
+    right: 100px;
+
+    /* thông báo đẩy */
+    display: inline-flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.alert__item {
+    position: relative;
+    display: inline-flex;
+    width: 200px;
+    padding: 8px 10px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.hideAlert {
+    /* sử dụng keyframe animation */
+    animation-name: alert-hidden;
+    animation-duration: 0.5s; /** thời gian thực hiện */
+    animation-fill-mode: both;
+}
+  
+@keyframes alert-hidden {
+    from {
+      left: 0;
+    }
+    to {
+      left: 200%;
+      display: none;
+    }
+}
+
+.alert__item [close-alert] {
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+    top: 8px;
+}
+
+.alert--success {
+    background-color: #D4EDDA;
+    color: #275724;
+}
+
+.alert--error {
+    background-color: #F8D7DA;
+    color: #721C24;
+}
+
+.alert--warning {
+    background-color: #FFF3CD;
+    color: #906404;
+}
+/* hết alert */
+
+

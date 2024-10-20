@@ -4,7 +4,7 @@
 // -------------------- FIREBASE -------------------- //
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 
-import { getDatabase, ref, push, set, onValue  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+import { getDatabase, ref, push, set, onValue, remove  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -24,22 +24,52 @@ const db = getDatabase();
 const todoReference = ref(db, 'todos');
 
 const todoApp = document.querySelector(".todo-app");
+const alert = document.querySelector(".alert");
 
 
+// Thông báo alert
+const showAlert = (content = null, state, time) => {
+  if(content === null) return; // nếu không có nội dung thì return luôn
+
+  const newAlertItem = document.createElement("div");
+
+  newAlertItem.setAttribute("class", `alert__item alert--${state}`); 
+  newAlertItem.innerHTML = `
+    <span> ${content} ! </span>
+    <span close-alert>
+      <i class="fa-solid fa-xmark"></i>
+    </span>
+  `;
+  alert.appendChild(newAlertItem);
+
+  // khi nhấn vào nút close alert thì sẽ tắt alert đó
+  const closeAlertItem = newAlertItem.querySelector("[close-alert");
+  closeAlertItem.addEventListener("click", (event) => {
+    newAlertItem.style.display = "none";
+  });
+
+  // sau TIME giây nếu không nhấn vào close alert thì nó sẽ tự tắt
+  setTimeout(() => {
+    // newAlertItem.style.display = "none";
+    newAlertItem.classList.add("hideAlert");
+  }, time);
+}
+// Hết Thông báo alert
+
+// Todo App
 if(todoApp) {
 
   // lấy các class todo
   const todoAppCreate = todoApp.querySelector(".todo-app__create");
   const todoAppList = todoApp.querySelector(".todo-app__list");
 
-  // Tạo mới công việc
-
-  // lắng nghe sự kiện "submit" của form tạo công việc mới
+  // Tạo mới công việc, lắng nghe sự kiện "submit" của form tạo công việc mới
   todoAppCreate.addEventListener("submit", (event) => {
     event.preventDefault(); // ngăn chặn sự kiện mặc định
 
-    const content = todoAppCreate.content.value; // .content là . vào thuộc tính name của trong form todoAppCreate
+    if(todoAppCreate.content.value === "") return; // nếu không nhập gì hết thì không tạo
 
+    const content = todoAppCreate.content.value; // .content là . vào thuộc tính name của trong form todoAppCreate
     todoAppCreate.content.value = ""; 
 
     const record  = {
@@ -49,6 +79,9 @@ if(todoApp) {
     const newRecords = push(todoReference); // tạo bản ghi mới có ID riêng biệt
 
     set(newRecords, record); // tạo bản ghi đưa lên database
+
+    // khi tạo thành công thì hiển thị thông báo đẩy alert
+    showAlert("Tạo thành công", "success", 3000);
   });
   // Hết Tạo mới công việc
 
@@ -75,7 +108,7 @@ if(todoApp) {
                 </button>
                 <button 
                   class="todo-app__item-button todo-app__item-buton--delete"
-                  todo-id = ${record.key}
+                  todo-delete = ${record.key}
                 >
                     <i class="fa-solid fa-trash"></i>  
                 </button>
@@ -84,9 +117,19 @@ if(todoApp) {
       ` + htmls;
     });
     todoAppList.innerHTML = htmls;
+
+    // Tính năng xóa công việc
+    const listButtonDelete = todoAppList.querySelectorAll("[todo-delete]");
+    listButtonDelete.forEach(button => {
+      button.addEventListener("click", (event) => {
+        const id = button.getAttribute("todo-delete");
+        remove(ref(db, 'todos/' + id));
+        showAlert("Xóa thành công", "success", 5000);
+      });
+    });
+    // Hết tính năng xóa công việc
   });
   // Hết Hiển thị danh sách công việc
-
 }
 // Hết Todo App
 
@@ -109,7 +152,6 @@ if(buttonBackgroundMode) {
   });  
 }
 // hết dark mode và light mode
-
 
 // check xem trang web có đang ở chế độ dark mode không
 const isDarkMode = (localStorage.getItem("lightDarkMode") === "dark");
