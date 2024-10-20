@@ -56,6 +56,68 @@ const showAlert = (content = null, state, time) => {
 }
 // Hết Thông báo alert
 
+// Thông báo confirm
+const showConfirm = (type = null, id) => {
+  if(type === null) return;
+
+  const typeSelect = {
+    "delete":  {
+      icon : `<i class="fa-solid fa-circle-exclamation"></i>`,
+      query: `Xóa công việc`,
+      content: `Bạn có chắc chắn bạn muốn xóa công việc này không`
+    }
+  }
+
+  const newModalConfirm = document.createElement("div");
+
+  newModalConfirm.setAttribute("class", "modal");
+
+  newModalConfirm.innerHTML = `
+    <div class="modal__wrap">
+      <span class="modal__icon modal__icon--${type}">
+        ${typeSelect[type].icon}
+      </span>
+      <h3 class="modal__query">${typeSelect[type].query}</h3>
+      <span class="modal__content">${typeSelect[type].content}</span>
+      <div class="modal__buttons"> 
+        <button class="modal__button modal__button--${type}"> 
+          Xác nhận
+        </button>
+        <button class="modal__button modal__button-cancle"> 
+          Dừng lại
+        </button>
+      </div>
+    </div>
+    <div class="overlay"></div>
+  `;
+
+  document.body.appendChild(newModalConfirm);
+
+  // khi nhấn overlay thì close cái này luôn
+  const overlay = document.querySelector(".overlay");
+  overlay.addEventListener("click", event => {
+    document.body.removeChild(newModalConfirm);
+  });
+
+  // khi nhấn nút cancle thì cũng close luôn
+  const buttonCancle = newModalConfirm.querySelector(".modal__button-cancle");
+  buttonCancle.addEventListener("click", (evnet) => {
+    document.body.removeChild(newModalConfirm);
+  });
+
+  // khi nhấn xác nhận 
+  const buttonAccept = newModalConfirm.querySelector(`.modal__button--${type}`);
+  buttonAccept.addEventListener("click", event => {
+    // nếu kiểu là xóa
+    if(type === "delete") {
+      remove(ref(db, 'todos/' + id));
+      document.body.removeChild(newModalConfirm);
+      showAlert("Xóa thành công", "success", 5000);
+    }
+  });
+}
+// Hết Thông báo confirm
+
 // Todo App
 if(todoApp) {
 
@@ -123,8 +185,8 @@ if(todoApp) {
     listButtonDelete.forEach(button => {
       button.addEventListener("click", (event) => {
         const id = button.getAttribute("todo-delete");
-        remove(ref(db, 'todos/' + id));
-        showAlert("Xóa thành công", "success", 5000);
+        // remove(ref(db, 'todos/' + id));
+        showConfirm("delete", id);
       });
     });
     // Hết tính năng xóa công việc

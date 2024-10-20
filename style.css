@@ -317,4 +317,84 @@ body.dark .button-bg-mode::before {
 }
 /* hết alert */
 
+/* modal */
+.modal {
+    width: 100%;
+    height: 100%;
+    /* vị trí */
+    position: fixed;
+    top: 0;
+    left: 0;
 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+.modal__wrap {
+    width: 30%;
+    padding: 15px 20px;
+    background-color: var(--light-mode-border);
+    border-radius: 12px;
+    position: relative;
+    z-index: 999;
+}
+
+.modal__icon {
+    display: block;
+    font-size: 40px;
+    text-align: center;
+}
+
+.modal__icon--delete {
+    color: #721C24; 
+}
+
+.modal__query {
+    margin: 5px 0px 10px 0px;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.modal__content {
+    display: block;
+    font-size: 14px;
+    text-align: center;
+}
+
+.modal__buttons {
+    margin: 15px 0px 5px 0px;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    align-items: center;
+}
+
+.modal__button {
+    padding: 8px 10px;
+    border: 0;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.modal__button--delete {
+    background-color: #F14646;
+    color: white;
+}
+/* hết modal */
+
+
+.overlay {
+    background-color: #00000065;
+    width: 100%;
+    height: 100%;
+
+    /* căn chỉnh tương đối để không giành vị trí */
+    position: absolute;
+    cursor: pointer;
+}
