@@ -1,5 +1,10 @@
+// -------------------- MY MODULE -------------------- //
+// import { chuanHoaTen } from "./chuanHoaTen.helper";
+
 // -------------------- FIREBASE -------------------- //
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+
+import { getDatabase, ref, push, set, onValue  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,10 +20,75 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+const db = getDatabase();
+const todoReference = ref(db, 'todos');
+
+const todoApp = document.querySelector(".todo-app");
 
 
+if(todoApp) {
 
+  // lấy các class todo
+  const todoAppCreate = todoApp.querySelector(".todo-app__create");
+  const todoAppList = todoApp.querySelector(".todo-app__list");
 
+  // Tạo mới công việc
+
+  // lắng nghe sự kiện "submit" của form tạo công việc mới
+  todoAppCreate.addEventListener("submit", (event) => {
+    event.preventDefault(); // ngăn chặn sự kiện mặc định
+
+    const content = todoAppCreate.content.value; // .content là . vào thuộc tính name của trong form todoAppCreate
+
+    todoAppCreate.content.value = ""; 
+
+    const record  = {
+      title: content,
+      complete: false, // chưa hoàn thành công việc (việc mới tạo)
+    }
+    const newRecords = push(todoReference); // tạo bản ghi mới có ID riêng biệt
+
+    set(newRecords, record); // tạo bản ghi đưa lên database
+  });
+  // Hết Tạo mới công việc
+
+  // Hiển thị danh sách công việc (Công việc mới tạo sẽ hiện lên đầu)
+  onValue(todoReference, (records) => {
+    let htmls = "";
+
+    records.forEach(record => {
+      htmls = `
+        <div class="todo-app__item">
+            <span class="todo-app__item-content">${record.val().title}</span>
+            <div class="todo-app__item-actions">
+                <button 
+                  class="todo-app__item-button todo-app__item-buton--complete"
+                  todo-id = ${record.key}
+                >
+                    <i class="fa-solid fa-check"></i>
+                </button>
+                <button 
+                  class="todo-app__item-button todo-app__item-buton--edit"
+                  todo-id = ${record.key} 
+                >
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button 
+                  class="todo-app__item-button todo-app__item-buton--delete"
+                  todo-id = ${record.key}
+                >
+                    <i class="fa-solid fa-trash"></i>  
+                </button>
+            </div>
+        </div>
+      ` + htmls;
+    });
+    todoAppList.innerHTML = htmls;
+  });
+  // Hết Hiển thị danh sách công việc
+
+}
+// Hết Todo App
 
 
 // dark mode và light mode

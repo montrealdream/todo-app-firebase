@@ -25,6 +25,7 @@
 body {
     margin: 0px; /* reset margin của thẻ body */
     font-family: var(--font-main);
+    background-color:var(--light-mode-border);
 }
 
 /** todo app*/
@@ -173,7 +174,6 @@ body.dark .todo-app__item {
     cursor: pointer;
 }
 
-
 .todo-app__item-buton--complete {
     background-color: #198754;
     color: white;
@@ -190,7 +190,6 @@ body.dark .todo-app__item {
 }
 
 /** hết todo app*/
-
 
 /* nút dark mode và light mode */
 .button-bg-mode {
@@ -210,7 +209,7 @@ body.dark .todo-app__item {
     justify-content: center;
     align-items: center;    
 
-    background-color: #ddd;
+    background-color: #FFFFFF;
 }
 
 .button-bg-mode::before {
