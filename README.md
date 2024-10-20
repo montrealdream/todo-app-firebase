@@ -2,6 +2,8 @@
 -  Đây là dự án FrontEnd với chủ đề là Todo App. <br>
 -  Được xây dựng bằng các công nghệ như là Html, Css, Javascript, Firebase. <br>
 
+## TÍNH NĂNG
+-  CRUD: Thêm, Sửa, Xóa, Xem công việc
 ## TECH STACK
 <div>
   <img width="50" src="https://user-images.githubusercontent.com/25181517/192158954-f88b5814-d510-4564-b285-dff7d6400dad.png" alt="html" title="html"/>
