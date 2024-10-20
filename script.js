@@ -4,7 +4,7 @@
 // -------------------- FIREBASE -------------------- //
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 
-import { getDatabase, ref, push, set, onValue, remove  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+import { getDatabase, ref, push, set, onValue, remove, update  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -26,6 +26,18 @@ const todoReference = ref(db, 'todos');
 const todoApp = document.querySelector(".todo-app");
 const alert = document.querySelector(".alert");
 
+const typeSelect = {
+  "delete":  {
+    icon : `<i class="fa-solid fa-circle-exclamation"></i>`,
+    query: `Xóa công việc`,
+    content: `Bạn có chắc chắn bạn muốn xóa công việc này không`
+  },
+
+  "edit" : {
+    icon: `<i class="fa-solid fa-pen-to-square"></i>`,
+    query: `Chỉnh sửa công việc`
+  }
+}
 
 // Thông báo alert
 const showAlert = (content = null, state, time) => {
@@ -56,17 +68,61 @@ const showAlert = (content = null, state, time) => {
 }
 // Hết Thông báo alert
 
+// close modal
+const closeModal = (element) => {
+  // khi nhấn overlay thì close cái này luôn
+  const overlay = document.querySelector(".overlay");
+  overlay.addEventListener("click", event => {
+    document.body.removeChild(element);
+  });
+
+  // khi nhấn nút cancle thì cũng close luôn
+  const buttonCancle = element.querySelector("[button-cancle]");
+  buttonCancle.addEventListener("click", (evnet) => {
+    document.body.removeChild(element);
+  });
+}
+// hết close modal
+
+// khi nhấn nút xác nhận
+const acceptModal = (type, id, element) => {
+  const buttonAccept = element.querySelector(`[button-accept]`);
+  buttonAccept.addEventListener("click", event => {
+    // nếu kiểu là xóa
+    if(type === "delete") {
+      remove(ref(db, 'todos/' + id))
+      .then(() => {
+        document.body.removeChild(element);
+        showAlert("Xóa thành công", "success", 5000);
+      });
+    }
+
+    // nếu là cập nhật bản ghi
+    else if(type === "edit") {
+      const content = element.querySelector(".modal__input").value;
+      if(content) {
+        const dataUpdate = {
+          title: content
+        };
+
+        document.body.removeChild(element); 
+
+        update(ref(db, 'todos/' + id), dataUpdate)
+        .then(() => {
+          showAlert("Cập nhật thành công", "success", "5000");
+        })
+        .catch(() => {
+          showAlert("Cập nhật thất bại", "error", "5000");
+        });
+      }
+    }
+  });
+}
+// hết khi nhấn nút xác nhận
+
 // Thông báo confirm
 const showConfirm = (type = null, id) => {
   if(type === null) return;
-
-  const typeSelect = {
-    "delete":  {
-      icon : `<i class="fa-solid fa-circle-exclamation"></i>`,
-      query: `Xóa công việc`,
-      content: `Bạn có chắc chắn bạn muốn xóa công việc này không`
-    }
-  }
 
   const newModalConfirm = document.createElement("div");
 
@@ -80,10 +136,16 @@ const showConfirm = (type = null, id) => {
       <h3 class="modal__query">${typeSelect[type].query}</h3>
       <span class="modal__content">${typeSelect[type].content}</span>
       <div class="modal__buttons"> 
-        <button class="modal__button modal__button--${type}"> 
+        <button 
+          class="modal__button modal__button--${type}"
+          button-accept  
+        > 
           Xác nhận
         </button>
-        <button class="modal__button modal__button-cancle"> 
+        <button 
+          class="modal__button modal__button-cancle"
+          button-cancle
+        > 
           Dừng lại
         </button>
       </div>
@@ -93,30 +155,61 @@ const showConfirm = (type = null, id) => {
 
   document.body.appendChild(newModalConfirm);
 
-  // khi nhấn overlay thì close cái này luôn
-  const overlay = document.querySelector(".overlay");
-  overlay.addEventListener("click", event => {
-    document.body.removeChild(newModalConfirm);
-  });
-
-  // khi nhấn nút cancle thì cũng close luôn
-  const buttonCancle = newModalConfirm.querySelector(".modal__button-cancle");
-  buttonCancle.addEventListener("click", (evnet) => {
-    document.body.removeChild(newModalConfirm);
-  });
+  // đóng modal nếu có nhấn vào overlay hoặc nút cancle
+  closeModal(newModalConfirm);
 
   // khi nhấn xác nhận 
-  const buttonAccept = newModalConfirm.querySelector(`.modal__button--${type}`);
-  buttonAccept.addEventListener("click", event => {
-    // nếu kiểu là xóa
-    if(type === "delete") {
-      remove(ref(db, 'todos/' + id));
-      document.body.removeChild(newModalConfirm);
-      showAlert("Xóa thành công", "success", 5000);
-    }
-  });
+  acceptModal("delete", id, newModalConfirm);
 }
 // Hết Thông báo confirm
+
+// Show form edit
+const showFormEdit = (type = null, id) => {
+  const newModalEdit = document.createElement("div");
+  newModalEdit.setAttribute("class", "modal");
+
+  newModalEdit.innerHTML = `
+    <div class="modal__wrap">
+      <span class="modal__icon modal__icon--${type}">
+        ${typeSelect[type].icon}
+      </span>
+      <h3 class="modal__query">${typeSelect[type].query}</h3>
+      <input class="modal__input" name="content">
+      <div class="modal__buttons"> 
+        <button 
+          class="modal__button modal__button--${type}"
+          button-accept
+        > 
+          Cập nhật
+        </button>
+        <button 
+          class="modal__button modal__button-cancle"
+          button-cancle
+        > 
+          Dừng lại
+        </button>
+      </div>
+    </div>
+    <div class="overlay"></div>
+  `;
+
+  document.body.appendChild(newModalEdit);
+
+  // đóng modal nếu có nhấn vào overlay hoặc nút cancle
+  closeModal(newModalEdit);
+
+  // khi nhấn xác nhận 
+  acceptModal("edit", id, newModalEdit);
+
+  // thêm nội dung vào thẻ input, lấy chi tiết công việc theo id
+  const record = ref(db, 'todos/' + id);
+  onValue(record, (recordDetail) => {
+    const data = recordDetail.val();
+
+    newModalEdit.querySelector("input[name='content']").value = data.title;
+  });
+}
+// Hết Show form edit
 
 // Todo App
 if(todoApp) {
@@ -164,7 +257,7 @@ if(todoApp) {
                 </button>
                 <button 
                   class="todo-app__item-button todo-app__item-buton--edit"
-                  todo-id = ${record.key} 
+                  todo-edit = ${record.key} 
                 >
                     <i class="fa-solid fa-pen-to-square"></i>
                 </button>
@@ -190,11 +283,27 @@ if(todoApp) {
       });
     });
     // Hết tính năng xóa công việc
+
+    // Tính năng chỉnh sửa công việc
+    const listButtonEdit = todoAppList.querySelectorAll("[todo-edit]");
+    listButtonEdit.forEach(button => {
+      button.addEventListener("click", (event) => {
+        const id = button.getAttribute("todo-edit");
+
+        showFormEdit("edit", id);
+        // lấy chi tiết công việc theo id
+        // const record = ref(db, 'todos/' + id);
+        // onValue(record, (recordDetail) => {
+        //   const data = recordDetail.val();
+        //   console.log(data);
+        // });
+      });
+    });
+    // Hết Tính năng chỉnh sửa công việc
   });
   // Hết Hiển thị danh sách công việc
 }
 // Hết Todo App
-
 
 // dark mode và light mode
 const buttonBackgroundMode = document.querySelector(".button-bg-mode");

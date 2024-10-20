@@ -271,7 +271,7 @@ body.dark .button-bg-mode::before {
 .alert__item {
     position: relative;
     display: inline-flex;
-    width: 200px;
+    width: 250px;
     padding: 8px 10px;
     font-size: 16px;
     border-radius: 5px;
@@ -352,6 +352,10 @@ body.dark .button-bg-mode::before {
     color: #721C24; 
 }
 
+.modal__icon--edit {
+    color: #fab005; 
+}
+
 .modal__query {
     margin: 5px 0px 10px 0px;
     font-size: 20px;
@@ -363,6 +367,14 @@ body.dark .button-bg-mode::before {
     display: block;
     font-size: 14px;
     text-align: center;
+}
+
+.modal__input {
+    width: 100%;
+    padding: 6px 10px;
+    border: 0px;
+    border-radius: 6px;
+    outline: none;
 }
 
 .modal__buttons {
@@ -385,6 +397,11 @@ body.dark .button-bg-mode::before {
 .modal__button--delete {
     background-color: #F14646;
     color: white;
+}
+
+.modal__button--edit {
+    background-color: #fab005;
+    color: black;
 }
 /* hết modal */
 
