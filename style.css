@@ -172,6 +172,12 @@ body.dark .todo-app__item {
     padding: 0px 10px;
     border-radius: 8px;
     margin-bottom: 10px;
+    position: relative;
+}
+
+body.dark .todo-app__item--finish, .todo-app__item--finish {
+    background-color: #D8F0C1;
+    color: #000000;
 }
 
 .todo-app__item-content {
@@ -210,7 +216,6 @@ body.dark .todo-app__item {
     background-color: #DC3545;
     color: white;
 }
-
 /** hết todo app*/
 
 /* nút dark mode và light mode */
@@ -406,6 +411,7 @@ body.dark .button-bg-mode::before {
 /* hết modal */
 
 
+/* overlay */
 .overlay {
     background-color: #00000065;
     width: 100%;
@@ -415,3 +421,4 @@ body.dark .button-bg-mode::before {
     position: absolute;
     cursor: pointer;
 }
+/* hết overlay */
