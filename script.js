@@ -1,6 +1,3 @@
-// -------------------- MY MODULE -------------------- //
-// import { chuanHoaTen } from "./chuanHoaTen.helper";
-
 // -------------------- FIREBASE -------------------- //
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 
@@ -24,7 +21,9 @@ const db = getDatabase();
 const todoReference = ref(db, 'todos');
 
 const todoApp = document.querySelector(".todo-app");
-const alert = document.querySelector(".alert");
+
+// module alert
+import showAlert from "./show-alert.js";
 
 const typeSelect = {
   "delete":  {
@@ -41,35 +40,6 @@ const typeSelect = {
     buttonAccept: "Cập nhật"
   }
 }
-
-// Thông báo alert
-const showAlert = (content = null, state, time) => {
-  if(content === null) return; // nếu không có nội dung thì return luôn
-
-  const newAlertItem = document.createElement("div");
-
-  newAlertItem.setAttribute("class", `alert__item alert--${state}`); 
-  newAlertItem.innerHTML = `
-    <span> ${content} ! </span>
-    <span close-alert>
-      <i class="fa-solid fa-xmark"></i>
-    </span>
-  `;
-  alert.appendChild(newAlertItem);
-
-  // khi nhấn vào nút close alert thì sẽ tắt alert đó
-  const closeAlertItem = newAlertItem.querySelector("[close-alert");
-  closeAlertItem.addEventListener("click", (event) => {
-    newAlertItem.style.display = "none";
-  });
-
-  // sau TIME giây nếu không nhấn vào close alert thì nó sẽ tự tắt
-  setTimeout(() => {
-    // newAlertItem.style.display = "none";
-    newAlertItem.classList.add("hideAlert");
-  }, time);
-}
-// Hết Thông báo alert
 
 // close modal
 const closeModal = (element) => {
@@ -297,7 +267,7 @@ if(todoApp) {
         const dataUpdate = {
           complete: true
         };
-      
+        
         update(ref(db, 'todos/' + id), dataUpdate).then(() => {
           showAlert("Cập nhật thành công", "success", 3000);
         });
